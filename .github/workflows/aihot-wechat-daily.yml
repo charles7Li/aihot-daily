@@ -1,0 +1,24 @@
+name: AIHot Daily WeCom
+
+on:
+  schedule:
+    # GitHub Actions uses UTC. This runs at 08:00 in Asia/Shanghai.
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Send AIHot daily digest
+        run: python scripts/aihot_wechat_daily.py
+        env:
+          SENDKEY: ${{ secrets.SENDKEY }}
